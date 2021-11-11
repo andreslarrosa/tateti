@@ -8,14 +8,13 @@
  */
 
 function validarSimbolo() {
-    $simbolo = "a";
-    while ($simbolo != "X" && $simbolo != "O") {
+    do {
         echo "Ingrese un símbolo X o O: ";
         $simbolo = strtoupper(trim(fgets(STDIN)));
         if ($simbolo != "X" && $simbolo != "O") {
             echo "Símbolo inválido\n";
         }
-    }
+    } while ($simbolo != "X" && $simbolo != "O");
     return ($simbolo);
 }
 
