@@ -47,8 +47,32 @@ function selectionarOpcion(){
  * @param array $unJuego
  * 
  */
-function mostrarJuego ($unJuego){
-    imprimirTableroTateti($unJuego);
+function mostrarJuego ($colJuegos){
+    $noEncontrado=true;
+    $ganador="";
+    do{
+        echo "Ingrese un numero de juego: ";
+        $numJuego=trim(fgets(STDIN));
+        if ($numJuego > 0 && $numJuego <= count($colJuegos)){
+            $noEncontrado=false;
+            $juego=$colJuegos[$numJuego-1];
+            if ($juego["puntosCruz"]==$juego["puntosCirculo"]){
+                $ganador="(empate)";
+            }elseif(($juego["puntosCruz"] > $juego["puntosCirculo"])){
+                $ganador="(Gano X)";
+            }else{
+                $ganador="(Gano O)";
+            }
+
+            echo "****************************** \n";
+            echo "Juego TATETI ".$numJuego."  ".$ganador;
+            echo "Jugador X: ".$juego["jugadorCruz"]." obtuvo ".$juego["puntosCruz"]." puntos \n";
+            echo "Jugador O: ".$juego["jugadorCirculo"]." obtuvo ".$juego["puntosCirculo"]." puntos \n";
+            echo "****************************** \n";
+        }else{
+            echo "El numero de juego no existe. \n ";
+        }
+    }while($noEncontrado);
 }
 
 /**
