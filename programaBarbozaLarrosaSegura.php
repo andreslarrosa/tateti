@@ -345,10 +345,8 @@ function ordenarNombresJugadorCirculo($a,$b)
 /**************************************/
 
 //Declaración de variables:
-$nombreJugadorABuscar = "";
 
 //Inicialización de variables:
-
 
 //Proceso:
 
