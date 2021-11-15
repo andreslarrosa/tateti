@@ -21,23 +21,27 @@
 /**
  * Metodo que intenta resolver el punto 2 EXPLICACION 3
  * visualiza el menu de opciones y retona una opcion valida
- * @return $opcion //int
+ * @return int
  */
-function selectionarOpcion(){
-    do{
-        echo "INGRESE UNA OPCION"."\n";
-        echo "1) Jugar al tateti"."\n";
-        echo "2) Mostrar un juego"."\n";
-        echo "3) Mostrar el primer juego ganador"."\n";
-        echo "4) Mostrar porcentaje de Juegos ganados"."\n";
-        echo "5) Mostrar resumen de Jugador"."\n";
-        echo "6) Mostrar listado de juegos Ordenado por jugador O"."\n";
-        echo "7) Salir"."\n";
-        $opcion=trim(fgets(STDIN));
-        if ( is_int($opcion) && !($opcion>0 && $opcion <8) ){
-            echo "Opcion NO Valida."."\n";
+
+function selectionarOpcion()
+{
+    $opcionValida = FALSE;
+    do {
+        echo "INGRESE UNA OPCION" . "\n";
+        echo "1) Jugar al tateti" . "\n";
+        echo "2) Mostrar un juego" . "\n";
+        echo "3) Mostrar el primer juego ganador" . "\n";
+        echo "4) Mostrar porcentaje de Juegos ganados" . "\n";
+        echo "5) Mostrar resumen de Jugador" . "\n";
+        echo "6) Mostrar listado de juegos Ordenado por jugador O" . "\n";
+        echo "7) Salir" . "\n";
+        $opcion = trim(fgets(STDIN));
+        $opcionValida = (is_int($opcion) && ($opcion > 0 && $opcion < 8));
+        if (!$opcionValida) {
+            echo "Opcion NO Valida." . "\n";
         }
-    } while ($opcion>0 && $opcion <8);
+    } while (!$opcionValida);
     return $opcion;
 }
 
@@ -47,32 +51,40 @@ function selectionarOpcion(){
  * @param array $unJuego
  * 
  */
-function mostrarJuego ($colJuegos){
-    $noEncontrado=true;
-    $ganador="";
-    do{
-        echo "Ingrese un numero de juego: ";
-        $numJuego=trim(fgets(STDIN));
-        if ($numJuego > 0 && $numJuego <= count($colJuegos)){
-            $noEncontrado=false;
-            $juego=$colJuegos[$numJuego-1];
-            if ($juego["puntosCruz"]==$juego["puntosCirculo"]){
-                $ganador="(empate)";
-            }elseif(($juego["puntosCruz"] > $juego["puntosCirculo"])){
-                $ganador="(Gano X)";
-            }else{
-                $ganador="(Gano O)";
-            }
+function mostrarJuego($colJuegos)
+{
+    $encontrado = false;
+    $ganador = "";
+    $cantidadDeJuegos = count($colJuegos);
+    if ($cantidadDeJuegos == 0) {
+        echo "No existen juegos en la coleccion \n";
+    } else {
+        do {
+            echo "Ingrese un numero de juego: (1-" . $cantidadDeJuegos . ")";
+            $numJuego = trim(fgets(STDIN));
+            $encontrado = ($numJuego > 0 && $numJuego <= $cantidadDeJuegos);
 
-            echo "****************************** \n";
-            echo "Juego TATETI ".$numJuego."  ".$ganador;
-            echo "Jugador X: ".$juego["jugadorCruz"]." obtuvo ".$juego["puntosCruz"]." puntos \n";
-            echo "Jugador O: ".$juego["jugadorCirculo"]." obtuvo ".$juego["puntosCirculo"]." puntos \n";
-            echo "****************************** \n";
-        }else{
-            echo "El numero de juego no existe. \n ";
-        }
-    }while($noEncontrado);
+            if ($encontrado) {
+
+                $juego = $colJuegos[$numJuego - 1];
+                if ($juego["puntosCruz"] == $juego["puntosCirculo"]) {
+                    $ganador = "(empate)";
+                } elseif (($juego["puntosCruz"] > $juego["puntosCirculo"])) {
+                    $ganador = "(Gano X)";
+                } else {
+                    $ganador = "(Gano O)";
+                }
+
+                echo "****************************** \n";
+                echo "Juego TATETI " . $numJuego . "  " . $ganador;
+                echo "Jugador X: " . $juego["jugadorCruz"] . " obtuvo " . $juego["puntosCruz"] . " puntos \n";
+                echo "Jugador O: " . $juego["jugadorCirculo"] . " obtuvo " . $juego["puntosCirculo"] . " puntos \n";
+                echo "****************************** \n";
+            } else {
+                echo "El numero de juego no existe. \n ";
+            }
+        } while (!$encontrado);
+    }
 }
 
 /**
@@ -84,31 +96,32 @@ function mostrarJuego ($colJuegos){
  * @return int
  * 
  */
-function indicePrimerJuegoGanado($colJuegos, $nombreJugador){
+function indicePrimerJuegoGanado($colJuegos, $nombreJugador)
+{
     $indice = -1;
-    $cantColJuegos=count($colJuegos);
-    $i=0;
-    $encontrado=FALSE;
+    $cantColJuegos = count($colJuegos);
+    $i = 0;
+    $encontrado = FALSE;
 
 
     //recorro la coleccion de juegos hasta encontrar el nombre del Jugador
-    while ($i<$cantColJuegos && !$encontrado){
-        if ($colJuegos[$i]["jugadorCruz"]==$nombreJugador){ 
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]){
-                $encontrado=true;
-                $indice=$i;
+    while ($i < $cantColJuegos && !$encontrado) {
+        if ($colJuegos[$i]["jugadorCruz"] == $nombreJugador) {
+            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]) {
+                $encontrado = true;
+                $indice = $i;
             }
-        }elseif($colJuegos[$i]["jugadorCirculo"]==$nombreJugador){
-            if ($colJuegos[$i]["puntosCirculo"] > $colJuegos[$i]["puntosCruz"]){
-                $encontrado=true;
-                $indice=$i;
+        } elseif ($colJuegos[$i]["jugadorCirculo"] == $nombreJugador) {
+            if ($colJuegos[$i]["puntosCirculo"] > $colJuegos[$i]["puntosCruz"]) {
+                $encontrado = true;
+                $indice = $i;
             }
         }
         $i++;
     }
     return $indice;
 }
- 
+
 /**
  * Metodo que intenta resolver el punto 7 EXPLICACIOn 3
  * Dada una coleccion de juegos y el nombre de un jugador, retorna el
@@ -118,9 +131,10 @@ function indicePrimerJuegoGanado($colJuegos, $nombreJugador){
  * @return array
  * 
  */
-function resumenJugador($colJuegos,$nombreJugador){
+function resumenJugador($colJuegos, $nombreJugador)
+{
     //declaro el array asociativo inicial que contendrá el resumen.
-    $resumen=[
+    $resumen = [
         "nombre" => "",
         "juegosGanados" => 0,
         "juegosPerdidos" => 0,
@@ -128,62 +142,64 @@ function resumenJugador($colJuegos,$nombreJugador){
         "puntosAcumulados" => 0
     ];
     //declaro variables auxiliares para sumatorias y/o conteos
-    $auxNombre="";
-    $auxJuegosGanados=0;
-    $auxJuegosPerdidos=0;
-    $auxJuegosEmpatados=0;
-    $auxPuntosAcumulados=0;
+    $auxNombre = "";
+    $auxJuegosGanados = 0;
+    $auxJuegosPerdidos = 0;
+    $auxJuegosEmpatados = 0;
+    $auxPuntosAcumulados = 0;
 
 
- 
+
     //Recorro la colecction de Juegos y acumulo los valores segun nombre jugador.
-    $cantColJuegos=count($colJuegos);
+    $cantColJuegos = count($colJuegos);
 
-    for ($i=0; $i<$cantColJuegos; $i++){
-        
-        if ($colJuegos[$i]["jugadorCruz"]==$nombreJugador){ 
-            $auxNombre=$nombreJugador;
+    for ($i = 0; $i < $cantColJuegos; $i++) {
 
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]){           
-               $auxJuegosGanados=$auxJuegosGanados+1;
-               $auxPuntosAcumulados=$auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+        if ($colJuegos[$i]["jugadorCruz"] == $nombreJugador) {
+            $auxNombre = $nombreJugador;
+
+            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]) {
+                $auxJuegosGanados = $auxJuegosGanados + 1;
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
             }
-            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculos"]){              
-                $auxJuegosPerdidos=$auxJuegosPerdidos+1;
-                $auxPuntosAcumulados=$auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
+            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculos"]) {
+                $auxJuegosPerdidos = $auxJuegosPerdidos + 1;
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
             }
-            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculos"]){              
-                $auxJuegosEmpatados=$auxJuegosEmpatados+1;
-                $auxPuntosAcumulados=$auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculos"]) {
+                $auxJuegosEmpatados = $auxJuegosEmpatados + 1;
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
             }
         }
-        
-        if($colJuegos[$i]["jugadorCirculo"]==$nombreJugador){
-            $auxNombre=$nombreJugador;
-            
-            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculos"]){           
-                $auxJuegosGanados=$auxJuegosGanados+1;
-                $auxPuntosAcumulados=$auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
-             }
-             if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]){              
-                 $auxJuegosPerdidos=$auxJuegosPerdidos+1;
-                 $auxPuntosAcumulados=$auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
-             }
-             if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculos"]){              
-                 $auxJuegosEmpatados=$auxJuegosEmpatados+1;
-                 $auxPuntosAcumulados=$auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
-             }
+
+        if ($colJuegos[$i]["jugadorCirculo"] == $nombreJugador) {
+            $auxNombre = $nombreJugador;
+
+            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculos"]) {
+                $auxJuegosGanados = $auxJuegosGanados + 1;
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+            }
+            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]) {
+                $auxJuegosPerdidos = $auxJuegosPerdidos + 1;
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
+            }
+            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculos"]) {
+                $auxJuegosEmpatados = $auxJuegosEmpatados + 1;
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+            }
         }
     }
 
-    $resumen["nombre"]=$auxNombre;
-    $resumen["juegosGanados"]= $auxJuegosGanados;
-    $resumen["juegosPerdidos"]=$auxJuegosPerdidos;
-    $resumen["juegosEmpatados"]=$auxJuegosEmpatados;
-    $resumen["puntosAcumulados"]=$auxPuntosAcumulados;
+    $resumen["nombre"] = $auxNombre;
+    $resumen["juegosGanados"] = $auxJuegosGanados;
+    $resumen["juegosPerdidos"] = $auxJuegosPerdidos;
+    $resumen["juegosEmpatados"] = $auxJuegosEmpatados;
+    $resumen["puntosAcumulados"] = $auxPuntosAcumulados;
 
     return $resumen;
 }
+
+
 
 
 /**************************************/
