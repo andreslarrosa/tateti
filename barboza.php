@@ -65,10 +65,24 @@ function numeroEntre($min, $max,){
     return $value;    
 }
 
-$prueba= numeroEntre(1, 3);
 
-echo $prueba;
-
-function agregarJuego(){
-    
+/**
+ * agrega un nuevo juego a una coleccion de juegos tipo array
+ * @param array $coleccionJuegos
+ * @param array $juegoNuevo
+ * @return array
+ */
+function agregarJuego($coleccionJuegos, $juegoNuevo){
+    // entero $columnas
+    $columnas= count($coleccionJuegos);
+    $coleccionJuegos[$columnas]= $juegoNuevo;
+    return $coleccionJuegos;
 }
+
+$prueba= CargarJuegos();
+$banana = ["jugadorCruz"=> "prueba" , "jugadorCirculo" => "prueba", "puntosCruz"=> 3, "puntosCirculo" => 0];
+
+$prueba= AgregarJuego($prueba, $banana);
+
+print_r($prueba);
+
