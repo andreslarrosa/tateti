@@ -87,38 +87,35 @@ function numeroEntre($min, $max){
  * Metodo que intenta resolver el punto 4 EXPLICACION 3
  * Dado un juego, muestra en pantalla los datos del juego.
  * @param array $colJuegos
+ * @param int $numJuego
  * 
  */
-function mostrarJuego($colJuegos)
+function mostrarJuego($colJuegos, $numJuego)
 {
     $encontrado = false;
     $ganador = "";
     $cantidadDeJuegos = count($colJuegos);
-    do {
-        echo "Ingrese un numero de juego: (1-" . $cantidadDeJuegos . ")";
-        $numJuego = trim(fgets(STDIN));
-        $encontrado = ($numJuego > 0 && $numJuego <= $cantidadDeJuegos);
+    $encontrado = ($numJuego > 0 && $numJuego <= $cantidadDeJuegos);
 
-        if ($encontrado) {
+    if ($encontrado) {
 
-            $juego = $colJuegos[$numJuego - 1];
-            if ($juego["puntosCruz"] == $juego["puntosCirculo"]) {
-                $ganador = "(empate)";
-            } elseif (($juego["puntosCruz"] > $juego["puntosCirculo"])) {
-                $ganador = "(Gano X)";
-            } else {
-                $ganador = "(Gano O)";
-            }
-
-            echo "****************************** \n";
-            echo "Juego TATETI " . $numJuego . "  " . $ganador. "\n";
-            echo "Jugador X: " . $juego["jugadorCruz"] . " obtuvo " . $juego["puntosCruz"] . " puntos \n";
-            echo "Jugador O: " . $juego["jugadorCirculo"] . " obtuvo " . $juego["puntosCirculo"] . " puntos \n";
-            echo "****************************** \n";
+        $juego = $colJuegos[$numJuego - 1];
+        if ($juego["puntosCruz"] == $juego["puntosCirculo"]) {
+            $ganador = "(empate)";
+        } elseif (($juego["puntosCruz"] > $juego["puntosCirculo"])) {
+            $ganador = "(Gano X)";
         } else {
-            echo "El numero de juego no existe. \n ";
+            $ganador = "(Gano O)";
         }
-    } while (!$encontrado);
+
+        echo "****************************** \n";
+        echo "Juego TATETI " . $numJuego . "  " . $ganador. "\n";
+        echo "Jugador X: " . $juego["jugadorCruz"] . " obtuvo " . $juego["puntosCruz"] . " puntos \n";
+        echo "Jugador O: " . $juego["jugadorCirculo"] . " obtuvo " . $juego["puntosCirculo"] . " puntos \n";
+        echo "****************************** \n";
+    } else {
+        echo "El numero de juego no existe. \n ";
+    }
 }
 
 /**
@@ -154,7 +151,7 @@ function indicePrimerJuegoGanado($colJuegos, $nombreJugador)
     //recorro la coleccion de juegos hasta encontrar el nombre del Jugador
     while ($i < $cantColJuegos && !$encontrado) {
         if ($colJuegos[$i]["jugadorCruz"] == $nombreJugador) {
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]) {
+            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculo"]) {
                 $encontrado = true;
                 $indice = $i;
             }
@@ -348,7 +345,7 @@ function ordenarNombresJugadorCirculo($a,$b)
 /**************************************/
 
 //Declaración de variables:
-
+$nombreJugadorABuscar = "";
 
 //Inicialización de variables:
 
@@ -361,12 +358,47 @@ do {
     $respuesta = selectionarOpcion();
     switch ($respuesta) {
         case 1:
+            // Ejecutamos las funciones de tateti.php para inciar un juego y guardamos el resultado en el array asociativo $juegoNuevo
             $juegoNuevo = jugar();
-            agregarJuego($listaDeJuegos, $juegoNuevo);
+            // Una vez completado el juego y guardado el resultado lo agregamos a nuestra base de datos donde están todos nuestros juegos
+            $listaDeJuegos = agregarJuego($listaDeJuegos, $juegoNuevo);
             break;
         case 2:
-            mostrarJuego($listaDeJuegos);
+            // Solicitamos un número de juego
+            $juegoABuscar = numeroEntre(1, count($listaDeJuegos));
+
+            // Y buscamos el número de juego previamente validado dentro de la respectiva función
+            mostrarJuego($listaDeJuegos, $juegoABuscar);
             break;
+        case 3:
+            // Solicitamos el nombre a buscar
+            echo "Ingrese el nombre del jugador a buscar: ";
+            // Lo guardamos como lo ingresa el usuario, para mostrarlo de la misma manera mas adelante
+            $nombreJugadorABuscar = trim(fgets(STDIN));
+
+            // Cuando queremos buscar el índice lo enviamos a la función en mayúscula ya que
+            // todos los nombres en la base de datos están ingresados en mayúscula.
+            $indiceDelPrimerJuegoGanado = indicePrimerJuegoGanado($listaDeJuegos, strtoupper($nombreJugadorABuscar)) + 1;
+
+            // En caso de que retorne -1, es decir que no se encontró el nombre en un juego ganador
+            if ($indiceDelPrimerJuegoGanado = -1) {
+                echo "El jugador ". $nombreJugadorABuscar. " no ganó ningún juego\n";
+            } else {
+                mostrarJuego($listaDeJuegos, $indiceDelPrimerJuegoGanado);
+            }
+            break;
+        case 4:
+            // Codigo para el caso 4
+            break;
+        case 5:
+            // Codigo para el caso 5
+            break;
+        case 6:
+            // Codigo para el caso 6
+            break;
+    //  No estoy seguro de este, estoy consultando, ya que el programa se corta si elige la opción 7
+    //  case 7:
+    //      break;
     }
 } while ($respuesta != 7);
 
