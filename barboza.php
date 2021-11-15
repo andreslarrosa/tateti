@@ -69,6 +69,6 @@ $prueba= numeroEntre(1, 3);
 
 echo $prueba;
 
-//de nuevo
-// y de nuevo
-//tenia que mandar el commit antes jejee
+function agregarJuego(){
+    
+}
