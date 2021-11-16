@@ -380,11 +380,13 @@ function jugadorJugoConNombre($colJuegos, $jugadorNombre) {
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
+// Programa para jugar al tateti, con menú de opciones para visualizar partidas y estadísticas particulares.
+// PROGRAMA teteti
 
 //Declaración de variables:
 // ENTERO respuesta, juegoABuscar, jugadorEnPartidas, indiceDelPrimerJuegoGanado, cantJuegosGanados, cantTotalDeJuegos, jugadorExiste
 // FLOAT porcentaje
-// ARREGLO nuevoJuego, listaDeJuegos
+// ARRAY nuevoJuego, listaDeJuegos
 // STRING nombreJugadorABuscar, simbolo, nombre
 
 //Inicialización de variables:
@@ -402,12 +404,12 @@ do {
             $listaDeJuegos = agregarJuego($listaDeJuegos, $nuevoJuego);
             break;
         case 2:
-            // Solicitamos un número de juego y después de validarlo lo buscamos dentro de la respectiva función
+            // Solicitamos un número de juego y después de validarlo lo buscamos dentro de la lista de juegos.
             $juegoABuscar = numeroEntre(1, count($listaDeJuegos));
             mostrarJuego($listaDeJuegos, ($juegoABuscar - 1));
             break;
         case 3:
-            // Solicitamos el nombre a buscar
+            // Mostramos el primer juego que ganó el jugador que ingresa el usuario.
             echo "Ingrese el nombre del jugador a buscar: ";
             // Lo guardamos como lo ingresa el usuario, para mostrarlo de la misma manera mas adelante
             $nombreJugadorABuscar = trim(fgets(STDIN));
@@ -418,20 +420,14 @@ do {
 
             // Verificamos si el jugador participó de algun juego según el nombre ingresado
             if ($jugadorEnPartidas == 1) {
-                // Cuando queremos buscar el índice lo enviamos a la función en mayúscula ya que
-                // todos los nombres en la base de datos están ingresados en mayúscula.
                 $indiceDelPrimerJuegoGanado = indicePrimerJuegoGanado($listaDeJuegos, strtoupper($nombreJugadorABuscar));
-
-                // Si retorna -1 se debe a que no se encontró un juego donde el nombre ingresado haya ganado
                 if ($indiceDelPrimerJuegoGanado == -1) {
                     echo "El jugador " . $nombreJugadorABuscar . " no ganó ningún juego\n";
                 } 
-                // Si retorna otro valor (El índice del juego) quiere decir que el jugador ganó un juego y lo vamos a mostrar
                 else {
                     mostrarJuego($listaDeJuegos, $indiceDelPrimerJuegoGanado);
                 }
             }
-            // Caso contrario devolvemos que no participó
             else {
                 echo "El jugador " . $nombreJugadorABuscar . " no participó de ningún juego\n";
             }
@@ -439,8 +435,7 @@ do {
             break;
         case 4:
             // Se le solicita al usuario que elija uno de los símbolos (X o O), y
-            //se muestra qué porcentaje de todos los juegos ganados, el ganador es el símbolo elegido por el
-            //usuario.
+            // se muestra qué porcentaje ganó en relación a todos los juegos ganados.
             $simbolo=validarSimbolo();
             $cantJuegosGanados=simboloJuegosGanados($listaDeJuegos,$simbolo);
             $cantTotalDeJuegos=totalJuegosGanados($listaDeJuegos);
@@ -449,28 +444,26 @@ do {
             break;
         case 5:
             // Se le solicita al usuario un nombre de jugador y se muestra en pantalla
-            //un resumen de los juegos ganados, los juegos perdidos, empates y acumulado de puntos.
+            // un resumen de los juegos ganados, los juegos perdidos, empates y puntos acumulados.
             echo "Ingrese el nombre de un jugador: ";
             $nombre = trim(fgets(STDIN));
 
             // Comprobamos si el nombre del jugador ingresado se encuentra en alguno de los juegos almacenados.
+            // Si existe, retorna 1 y sino retorna -1.
             $jugadorExiste = jugadorJugoConNombre($listaDeJuegos, strtoupper($nombre));
 
-            // En caso de existir devolvemos su resumen de juegos.
             if ($jugadorExiste == 1) {
                 auxMostrarResumen(resumenJugador($listaDeJuegos, strtoupper($nombre)));
             }
-            // En caso contrario devolvemos un mensaje de que el jugador no existe.
             else {
                 echo "El jugador ". $nombre . " no jugó ninguna partida.\n";
             }
             break;
         case 6:
-            // Se mostrará en pantalla la estructura ordenada alfabéticamente por jugador 0,
+            // Se mostrará en pantalla la estructura ordenada alfabéticamente por jugador O,
             // utilizando la función predefinida uasort de php, y la función predefinida print_r.
             juegosOrdenadosParaJugadorO($listaDeJuegos);
             break;
-            
          case 7:
             // Muestra un cartel de finalizacion de programa
             echo "FINALIZO EL PROGRAMA.";
