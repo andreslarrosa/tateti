@@ -97,11 +97,11 @@ function mostrarJuego($colJuegos, $numJuego)
     $encontrado = false;
     $ganador = "";
     $cantidadDeJuegos = count($colJuegos);
-    $encontrado = ($numJuego > 0 && $numJuego <= $cantidadDeJuegos);
+    $encontrado = ($numJuego >= 0 && $numJuego <= $cantidadDeJuegos);
 
     if ($encontrado) {
 
-        $juego = $colJuegos[$numJuego - 1];
+        $juego = $colJuegos[$numJuego];
         if ($juego["puntosCruz"] == $juego["puntosCirculo"]) {
             $ganador = "(empate)";
         } elseif (($juego["puntosCruz"] > $juego["puntosCirculo"])) {
@@ -205,15 +205,15 @@ function resumenJugador($colJuegos, $nombreJugador)
         if ($colJuegos[$i]["jugadorCruz"] == $nombreJugador) {
             $auxNombre = $nombreJugador;
 
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]) {
+            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculo"]) {
                 $auxJuegosGanados = $auxJuegosGanados + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
             }
-            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculos"]) {
+            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculo"]) {
                 $auxJuegosPerdidos = $auxJuegosPerdidos + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
             }
-            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculos"]) {
+            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculo"]) {
                 $auxJuegosEmpatados = $auxJuegosEmpatados + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
             }
@@ -222,15 +222,15 @@ function resumenJugador($colJuegos, $nombreJugador)
         if ($colJuegos[$i]["jugadorCirculo"] == $nombreJugador) {
             $auxNombre = $nombreJugador;
 
-            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculos"]) {
+            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculo"]) {
                 $auxJuegosGanados = $auxJuegosGanados + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
             }
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculos"]) {
+            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculo"]) {
                 $auxJuegosPerdidos = $auxJuegosPerdidos + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
             }
-            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculos"]) {
+            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculo"]) {
                 $auxJuegosEmpatados = $auxJuegosEmpatados + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
             }
@@ -253,11 +253,11 @@ function resumenJugador($colJuegos, $nombreJugador)
  */
 function auxMostrarResumen($resumen){
     echo "****************************** \n";
-    echo "Juegador: ".$resumen[0]."\n";
-    echo "Ganó: ".$resumen [1]." juegos \n";
-    echo "Perdió: ".$resumen [2]." juegos \n";
-    echo "Empató: ".$resumen [3]." juegos \n";
-    echo "Total de puntos acumulados: ".$resumen [4]." puntos \n";
+    echo "Jugador: ".$resumen["nombre"]."\n";
+    echo "Ganó: ".$resumen["juegosGanados"]." juegos \n";
+    echo "Perdió: ".$resumen["juegosPerdidos"]." juegos \n";
+    echo "Empató: ".$resumen["juegosEmpatados"]." juegos \n";
+    echo "Total de puntos acumulados: ".$resumen["puntosAcumulados"]." puntos \n";
     echo "****************************** \n";
 }
 
@@ -361,6 +361,24 @@ function ordenarNombresJugadorCirculo($a, $b)
     return strcmp($a["jugadorCirculo"], $b["jugadorCirculo"]);
 }
 
+/**
+ * Módulo verificador que busca un jugador por el nombre ingresado en la colección de juegos, en caso de estar retorna 1, en caso de no retorna -1
+ * @param array $coleccionDeJuegos
+ * @param string $nombreDelJugador
+ * @return int
+ */
+function jugadorJugoConNombre($coleccionDeJuegos, $nombreDelJugador) {
+    $cantidadJuegos = count($coleccionDeJuegos);
+    $jugadorEncontrado = -1;
+    for ($i=0; $i < $cantidadJuegos; $i++) {
+        if ($coleccionDeJuegos[$i]["jugadorCruz"] == $nombreDelJugador || $coleccionDeJuegos[$i]["jugadorCirculo"] == $nombreDelJugador) {
+            $jugadorEncontrado = 1;
+        }
+    }
+    return($jugadorEncontrado);
+}
+
+
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
@@ -385,7 +403,7 @@ do {
             $juegoABuscar = numeroEntre(1, count($listaDeJuegos));
 
             // Y buscamos el número de juego previamente validado dentro de la respectiva función
-            mostrarJuego($listaDeJuegos, $juegoABuscar);
+            mostrarJuego($listaDeJuegos, ($juegoABuscar - 1));
             break;
         case 3:
             // Solicitamos el nombre a buscar
@@ -393,16 +411,30 @@ do {
             // Lo guardamos como lo ingresa el usuario, para mostrarlo de la misma manera mas adelante
             $nombreJugadorABuscar = trim(fgets(STDIN));
 
-            // Cuando queremos buscar el índice lo enviamos a la función en mayúscula ya que
+            // Cuando queremos buscar el jugador lo enviamos a la función en mayúscula ya que
             // todos los nombres en la base de datos están ingresados en mayúscula.
-            $indiceDelPrimerJuegoGanado = indicePrimerJuegoGanado($listaDeJuegos, strtoupper($nombreJugadorABuscar)) + 1;
+            $jugadorEnPartidas = jugadorJugoConNombre($listaDeJuegos, strtoupper($nombreJugadorABuscar));
 
-            // En caso de que retorne -1, es decir que no se encontró el nombre en un juego ganador
-            if ($indiceDelPrimerJuegoGanado = -1) {
-                echo "El jugador " . $nombreJugadorABuscar . " no ganó ningún juego\n";
-            } else {
-                mostrarJuego($listaDeJuegos, $indiceDelPrimerJuegoGanado);
+            // Verificamos si el jugador participó de algun juego según el nombre ingresado
+            if ($jugadorEnPartidas == 1) {
+                // Cuando queremos buscar el índice lo enviamos a la función en mayúscula ya que
+                // todos los nombres en la base de datos están ingresados en mayúscula.
+                $indiceDelPrimerJuegoGanado = indicePrimerJuegoGanado($listaDeJuegos, strtoupper($nombreJugadorABuscar));
+
+                // Si retorna -1 se debe a que no se encontró un juego donde el nombre ingresado haya ganado
+                if ($indiceDelPrimerJuegoGanado == -1) {
+                    echo "El jugador " . $nombreJugadorABuscar . " no ganó ningún juego\n";
+                } 
+                // Si retorna otro valor (El índice del juego) quiere decir que el jugador ganó un juego y lo vamos a mostrar
+                else {
+                    mostrarJuego($listaDeJuegos, $indiceDelPrimerJuegoGanado);
+                }
             }
+            // Caso contrario devolvemos que no participó
+            else {
+                echo "El jugador " . $nombreJugadorABuscar . " no participó de ningún juego\n";
+            }
+            
             break;
         case 4:
             // Se le solicita al usuario que elija uno de los símbolos (X o O), y
@@ -411,13 +443,8 @@ do {
             $simbolo=validarSimbolo();
             $cantJuegosGanados=simboloJuegosGanados($listaDeJuegos,$simbolo);
             $cantTotalDeJuegos=count($listaDeJuegos);
-            if ($cantTotalDeJuegos!=0){
-                $porcentaje=($cantJUegosGanados/$cantTotalDeJuegos)*100;
-                echo $simbolo." ganó el ".$porcentaje."% de juegos ganados.";
-            }else{
-                echo "No existen juegos cargados.";
-            }
-            
+            $porcentaje=($cantJuegosGanados/$cantTotalDeJuegos)*100;
+            echo $simbolo." ganó el ".$porcentaje."% de juegos ganados.\n";
             break;
         case 5:
             // Se le solicita al usuario un nombre de jugador y se muestra en pantalla
