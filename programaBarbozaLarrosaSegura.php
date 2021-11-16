@@ -63,7 +63,7 @@ function selectionarOpcion()
 }
 
 /**
- * Implementar una función que solicite al usuario un número entre un rango de valores. Si el número 
+ * Implementar una función que solicite al usuario un número entre un rango de valores. Si el número ~ 3
  * ingresado por el usuario no es válido, la función se encarga de volver a pedirlo. La función retorna un
  * número válido.
  * @param int $min
@@ -77,7 +77,7 @@ function numeroEntre($min, $max)
     $value = trim(fgets(STDIN));
     if (!(($min <= $value) && ($value <= $max))) {
         while (!(($min <= $value) && ($value <= $max))) {
-            echo "error: ingrese un numero entre " . $min . " y " . $max . ": ";
+            echo "El numero de juego no existe\nIngrese un numero entre " . $min . " y " . $max . ": ";
             $value = trim(fgets(STDIN));
         }
     }
@@ -88,20 +88,20 @@ function numeroEntre($min, $max)
 /**
  * Metodo que intenta resolver el punto 4 EXPLICACION 3
  * Dado un juego, muestra en pantalla los datos del juego.
- * @param array $colJuegos
+ * @param array $conjuntoJuegos
  * @param int $numJuego
  * 
  */
-function mostrarJuego($colJuegos, $numJuego)
+function mostrarJuego($conjuntoJuegos, $numJuego)
 {
     $encontrado = false;
     $ganador = "";
-    $cantidadDeJuegos = count($colJuegos);
+    $cantidadDeJuegos = count($conjuntoJuegos);
     $encontrado = ($numJuego >= 0 && $numJuego <= $cantidadDeJuegos);
 
     if ($encontrado) {
 
-        $juego = $colJuegos[$numJuego];
+        $juego = $conjuntoJuegos[$numJuego];
         if ($juego["puntosCruz"] == $juego["puntosCirculo"]) {
             $ganador = "(empate)";
         } elseif (($juego["puntosCruz"] > $juego["puntosCirculo"])) {
@@ -111,7 +111,7 @@ function mostrarJuego($colJuegos, $numJuego)
         }
 
         echo "****************************** \n";
-        echo "Juego TATETI " . $numJuego . "  " . $ganador . "\n";
+        echo "Juego TATETI " . $numJuego + 1 . "  " . $ganador . "\n";
         echo "Jugador X: " . $juego["jugadorCruz"] . " obtuvo " . $juego["puntosCruz"] . " puntos \n";
         echo "Jugador O: " . $juego["jugadorCirculo"] . " obtuvo " . $juego["puntosCirculo"] . " puntos \n";
         echo "****************************** \n";
@@ -121,46 +121,46 @@ function mostrarJuego($colJuegos, $numJuego)
 }
 
 /**
- * Módulo que agrega un juego nuevo a una coleccion de juegos previa
- * @param array $coleccionJuegos
+ * Módulo que agrega un juego nuevo a una coleccion de juegos previa ~ 5
+ * @param array $coleccionDeJuegos
  * @param array $juegoNuevo
  * @return array
  */
-function agregarJuego($coleccionJuegos, $juegoNuevo)
+function agregarJuego($coleccionDeJuegos, $juegoNuevo)
 {
     // entero $columnas
-    $columnas = count($coleccionJuegos);
-    $coleccionJuegos[$columnas] = $juegoNuevo;
-    return $coleccionJuegos;
+    $columnas = count($coleccionDeJuegos);
+    $coleccionDeJuegos[$columnas] = $juegoNuevo;
+    return $coleccionDeJuegos;
 }
 
 /**
  * Metodo que intenta resolver el punto 6 EXPLICACION 3
  * Dada una coleccion de juegos y nombre de un jugador, retorna el indice
  * del primer juego ganado, caso contrario, retorna -1
- * @param array $colJuegos
+ * @param array $conjuntoDeJuegos
  * @param array $nombreJugador
  * @return int
  * 
  */
-function indicePrimerJuegoGanado($colJuegos, $nombreJugador)
+function indicePrimerJuegoGanado($conjuntoDeJuegos, $nombreJugador)
 {
     $indice = -1;
-    $cantColJuegos = count($colJuegos);
+    $cantColJuegos = count($conjuntoDeJuegos);
     $i = 0;
-    $encontrado = FALSE;
+    $encontro = FALSE;
 
 
     //recorro la coleccion de juegos hasta encontrar el nombre del Jugador
-    while ($i < $cantColJuegos && !$encontrado) {
-        if ($colJuegos[$i]["jugadorCruz"] == $nombreJugador) {
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculo"]) {
-                $encontrado = true;
+    while ($i < $cantColJuegos && !$encontro) {
+        if ($conjuntoDeJuegos[$i]["jugadorCruz"] == $nombreJugador) {
+            if ($conjuntoDeJuegos[$i]["puntosCruz"] > $conjuntoDeJuegos[$i]["puntosCirculo"]) {
+                $encontro = true;
                 $indice = $i;
             }
-        } elseif ($colJuegos[$i]["jugadorCirculo"] == $nombreJugador) {
-            if ($colJuegos[$i]["puntosCirculo"] > $colJuegos[$i]["puntosCruz"]) {
-                $encontrado = true;
+        } elseif ($conjuntoDeJuegos[$i]["jugadorCirculo"] == $nombreJugador) {
+            if ($conjuntoDeJuegos[$i]["puntosCirculo"] > $conjuntoDeJuegos[$i]["puntosCruz"]) {
+                $encontro = true;
                 $indice = $i;
             }
         }
@@ -173,12 +173,12 @@ function indicePrimerJuegoGanado($colJuegos, $nombreJugador)
  * Metodo que intenta resolver el punto 7 EXPLICACIOn 3
  * Dada una coleccion de juegos y el nombre de un jugador, retorna el
  * resumen del jugador utilizando la estructura b) de la EXPLICACION 2.
- * @param array $colJuegos
- * @param array $nombreJugador
+ * @param array $listadoJuegos
+ * @param array $nombreDelJugador
  * @return array
  * 
  */
-function resumenJugador($colJuegos, $nombreJugador)
+function resumenJugador($listadoJuegos, $nombreDelJugador)
 {
     //declaro el array asociativo inicial que contendrá el resumen.
     $resumen = [
@@ -198,41 +198,39 @@ function resumenJugador($colJuegos, $nombreJugador)
 
 
     //Recorro la colecction de Juegos y acumulo los valores segun nombre jugador.
-    $cantColJuegos = count($colJuegos);
+    $cantColeccionJuegos = count($listadoJuegos);
 
-    for ($i = 0; $i < $cantColJuegos; $i++) {
+    for ($j = 0; $j < $cantColeccionJuegos; $j++) {
 
-        if ($colJuegos[$i]["jugadorCruz"] == $nombreJugador) {
-            $auxNombre = $nombreJugador;
+        if ($listadoJuegos[$j]["jugadorCruz"] == $nombreDelJugador) {
+            $auxNombre = $nombreDelJugador;
 
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculo"]) {
+            if ($listadoJuegos[$j]["puntosCruz"] > $listadoJuegos[$j]["puntosCirculo"]) {
                 $auxJuegosGanados = $auxJuegosGanados + 1;
-                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $listadoJuegos[$j]["puntosCruz"];
             }
-            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculo"]) {
+            if ($listadoJuegos[$j]["puntosCruz"] < $listadoJuegos[$j]["puntosCirculo"]) {
                 $auxJuegosPerdidos = $auxJuegosPerdidos + 1;
-                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
             }
-            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculo"]) {
+            if ($listadoJuegos[$j]["puntosCruz"] == $listadoJuegos[$j]["puntosCirculo"]) {
                 $auxJuegosEmpatados = $auxJuegosEmpatados + 1;
-                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $listadoJuegos[$j]["puntosCruz"];
             }
         }
 
-        if ($colJuegos[$i]["jugadorCirculo"] == $nombreJugador) {
-            $auxNombre = $nombreJugador;
+        if ($listadoJuegos[$j]["jugadorCirculo"] == $nombreDelJugador) {
+            $auxNombre = $nombreDelJugador;
 
-            if ($colJuegos[$i]["puntosCruz"] < $colJuegos[$i]["puntosCirculo"]) {
+            if ($listadoJuegos[$j]["puntosCruz"] < $listadoJuegos[$j]["puntosCirculo"]) {
                 $auxJuegosGanados = $auxJuegosGanados + 1;
-                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $listadoJuegos[$j]["puntosCirculo"];
             }
-            if ($colJuegos[$i]["puntosCruz"] > $colJuegos[$i]["puntosCirculo"]) {
+            if ($listadoJuegos[$j]["puntosCruz"] > $listadoJuegos[$j]["puntosCirculo"]) {
                 $auxJuegosPerdidos = $auxJuegosPerdidos + 1;
-                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCirculo"];
             }
-            if ($colJuegos[$i]["puntosCruz"] == $colJuegos[$i]["puntosCirculo"]) {
+            if ($listadoJuegos[$j]["puntosCruz"] == $listadoJuegos[$j]["puntosCirculo"]) {
                 $auxJuegosEmpatados = $auxJuegosEmpatados + 1;
-                $auxPuntosAcumulados = $auxPuntosAcumulados + $colJuegos[$i]["puntosCruz"];
+                $auxPuntosAcumulados = $auxPuntosAcumulados + $listadoJuegos[$j]["puntosCirculo"];
             }
         }
     }
@@ -281,11 +279,11 @@ function validarSimbolo()
 
 /**
  * Módulo que recibe una colección de juegos y retorna la cantidad de juegos ganados ~ 9
- * @param array $coleccionJuegos
+ * @param array $colecJuegos
  * @return int
  */
 
-function totalJuegosGanados($coleccionJuegos)
+function totalJuegosGanados($colecJuegos)
 {
 
     // Inicializamos nuestra variable contadora que nos dirá la cantidad total de partidas ganadas, independiente de que jugador haya ganado.
@@ -295,8 +293,8 @@ function totalJuegosGanados($coleccionJuegos)
     // Hay varias formas de resolverlo, poniendo que los puntos de uno son mayor al otro o viceversa.
     // Diferenciar el puntaje de 1 es lo mas fácil y optimizado para saber que uno de los 2 ganó.
 
-    for ($i = 0; $i < count($coleccionJuegos); $i++) {
-        if ($coleccionJuegos[$i]["puntosCruz"] != 1) {
+    for ($k = 0; $k < count($colecJuegos); $k++) {
+        if ($colecJuegos[$k]["puntosCruz"] != 1) {
             $cantidadDeJuegosGanadosTotales++;
         }
     }
@@ -306,12 +304,12 @@ function totalJuegosGanados($coleccionJuegos)
 
 /**
  * Módulo que recibe una colección de juegos y un símbolo y retorna la cantidad de juegos ganados de ese símbolo ~ 10
- * @param array $coleccionJuegos
+ * @param array $colecDeJuegos
  * @param string $simbolo
  * @return int
  */
 
-function simboloJuegosGanados($coleccionJuegos, $simbolo)
+function simboloJuegosGanados($colecDeJuegos, $simbolo)
 {
 
     // Inicializamos nuestro contador que nos va a indicar cuantas partidas ganó el símbolo elegido
@@ -321,15 +319,15 @@ function simboloJuegosGanados($coleccionJuegos, $simbolo)
     // En este caso solo aumentará cuando el símbolo elegido haya ganado partidas, es decir que su puntaje es mayor a 1.
     // También se podría verificar si los puntos del jugador con el símbolo elegido sean mayor a los del otro.
 
-    for ($i = 0; $i < count($coleccionJuegos); $i++) {
+    for ($z = 0; $z < count($colecDeJuegos); $z++) {
         if ($simbolo == "X") {
-            // if ($coleccionJuegos[$i]["puntosCruz"] > $coleccionJuegos[$i]["puntosCriculo"]) {}
-            if ($coleccionJuegos[$i]["puntosCruz"] > 1) {
+            // if ($colecDeJuegos[$z]["puntosCruz"] > $colecDeJuegos[$z]["puntosCriculo"]) {}
+            if ($colecDeJuegos[$z]["puntosCruz"] > 1) {
                 $cantidadDeJuegosGanadosSimbolo++;
             }
         } else {
-            // if ($coleccionJuegos[$i]["puntosCirculo"] > $coleccionJuegos[$i]["puntosCruz"]) {}
-            if ($coleccionJuegos[$i]["puntosCirculo"] > 1) {
+            // if ($colecDeJuegos[$z]["puntosCirculo"] > $colecDeJuegos[$z]["puntosCruz"]) {}
+            if ($colecDeJuegos[$z]["puntosCirculo"] > 1) {
                 $cantidadDeJuegosGanadosSimbolo++;
             }
         }
@@ -339,14 +337,14 @@ function simboloJuegosGanados($coleccionJuegos, $simbolo)
 
 /**
  * Módulo que recibe una colección de juegos y los muestra ordenados alfabéticamente por el nombre del jugador Círculo ~ 11
- * @param array $coleccionJuegos
+ * @param array $colDeJuegos
  */
-function juegosOrdenadosParaJugadorO($coleccionJuegos)
+function juegosOrdenadosParaJugadorO($colDeJuegos)
 {
 
-    // Ordenamos el array $coleccionJuegos de la manera expresada en la función ordenarNombresJugadorCirculo
-    uasort($coleccionJuegos, "ordenarNombresJugadorCirculo");
-    print_r($coleccionJuegos);
+    // Ordenamos el array $colDeJuegos de la manera expresada en la función ordenarNombresJugadorCirculo
+    uasort($colDeJuegos, "ordenarNombresJugadorCirculo");
+    print_r($colDeJuegos);
 }
 
 /**
@@ -363,15 +361,15 @@ function ordenarNombresJugadorCirculo($a, $b)
 
 /**
  * Módulo verificador que busca un jugador por el nombre ingresado en la colección de juegos, en caso de estar retorna 1, en caso de no retorna -1
- * @param array $coleccionDeJuegos
- * @param string $nombreDelJugador
+ * @param array $colJuegos
+ * @param string $jugadorNombre
  * @return int
  */
-function jugadorJugoConNombre($coleccionDeJuegos, $nombreDelJugador) {
-    $cantidadJuegos = count($coleccionDeJuegos);
+function jugadorJugoConNombre($colJuegos, $jugadorNombre) {
+    $cantidadJuegos = count($colJuegos);
     $jugadorEncontrado = -1;
-    for ($i=0; $i < $cantidadJuegos; $i++) {
-        if ($coleccionDeJuegos[$i]["jugadorCruz"] == $nombreDelJugador || $coleccionDeJuegos[$i]["jugadorCirculo"] == $nombreDelJugador) {
+    for ($x=0; $x < $cantidadJuegos; $x++) {
+        if ($colJuegos[$x]["jugadorCruz"] == $jugadorNombre || $colJuegos[$x]["jugadorCirculo"] == $jugadorNombre) {
             $jugadorEncontrado = 1;
         }
     }
@@ -384,8 +382,13 @@ function jugadorJugoConNombre($coleccionDeJuegos, $nombreDelJugador) {
 /**************************************/
 
 //Declaración de variables:
+// ENTERO respuesta, juegoABuscar, jugadorEnPartidas, indiceDelPrimerJuegoGanado, cantJuegosGanados, cantTotalDeJuegos, jugadorExiste
+// FLOAT porcentaje
+// ARREGLO nuevoJuego, listaDeJuegos
+// STRING nombreJugadorABuscar, simbolo, nombre
 
 //Inicialización de variables:
+// Cargamos 10 juegos a nuestra lista de juegos, para tener una base
 $listaDeJuegos = cargarJuegos();
 
 //Proceso:
@@ -393,16 +396,14 @@ do {
     $respuesta = selectionarOpcion();
     switch ($respuesta) {
         case 1:
-            // Ejecutamos las funciones de tateti.php para inciar un juego y guardamos el resultado en el array asociativo $juegoNuevo
-            $juegoNuevo = jugar();
+            // Ejecutamos las funciones de tateti.php para inciar un juego y guardamos el resultado en el array asociativo $nuevoJuego
+            $nuevoJuego = jugar();
             // Una vez completado el juego y guardado el resultado lo agregamos a nuestra base de datos donde están todos nuestros juegos
-            $listaDeJuegos = agregarJuego($listaDeJuegos, $juegoNuevo);
+            $listaDeJuegos = agregarJuego($listaDeJuegos, $nuevoJuego);
             break;
         case 2:
-            // Solicitamos un número de juego
+            // Solicitamos un número de juego y después de validarlo lo buscamos dentro de la respectiva función
             $juegoABuscar = numeroEntre(1, count($listaDeJuegos));
-
-            // Y buscamos el número de juego previamente validado dentro de la respectiva función
             mostrarJuego($listaDeJuegos, ($juegoABuscar - 1));
             break;
         case 3:
@@ -442,7 +443,7 @@ do {
             //usuario.
             $simbolo=validarSimbolo();
             $cantJuegosGanados=simboloJuegosGanados($listaDeJuegos,$simbolo);
-            $cantTotalDeJuegos=count($listaDeJuegos);
+            $cantTotalDeJuegos=totalJuegosGanados($listaDeJuegos);
             $porcentaje=($cantJuegosGanados/$cantTotalDeJuegos)*100;
             echo $simbolo." ganó el ".$porcentaje."% de juegos ganados.\n";
             break;
@@ -450,8 +451,19 @@ do {
             // Se le solicita al usuario un nombre de jugador y se muestra en pantalla
             //un resumen de los juegos ganados, los juegos perdidos, empates y acumulado de puntos.
             echo "Ingrese el nombre de un jugador: ";
-            $nombre=strtoupper(trim(fgets(STDIN)));
-            auxMostrarResumen(resumenJugador($listaDeJuegos,$nombre));
+            $nombre = trim(fgets(STDIN));
+
+            // Comprobamos si el nombre del jugador ingresado se encuentra en alguno de los juegos almacenados.
+            $jugadorExiste = jugadorJugoConNombre($listaDeJuegos, strtoupper($nombre));
+
+            // En caso de existir devolvemos su resumen de juegos.
+            if ($jugadorExiste == 1) {
+                auxMostrarResumen(resumenJugador($listaDeJuegos, strtoupper($nombre)));
+            }
+            // En caso contrario devolvemos un mensaje de que el jugador no existe.
+            else {
+                echo "El jugador ". $nombre . " no jugó ninguna partida.\n";
+            }
             break;
         case 6:
             // Se mostrará en pantalla la estructura ordenada alfabéticamente por jugador 0,
