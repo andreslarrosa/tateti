@@ -81,7 +81,6 @@ function numeroEntre($min, $max)
             $value = trim(fgets(STDIN));
         }
     }
-    "ingrese un numero entre " . $min . " y " . $max . ": ";
     return $value;
 }
 
