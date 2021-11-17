@@ -63,7 +63,7 @@ function selectionarOpcion()
 }
 
 /**
- * Implementar una función que solicite al usuario un número entre un rango de valores. Si el número ~ 3
+ * función que solicita al usuario un número entre un rango de valores. Si el número ~ 3
  * ingresado por el usuario no es válido, la función se encarga de volver a pedirlo. La función retorna un
  * número válido.
  * @param int $min
@@ -136,7 +136,7 @@ function agregarJuego($coleccionDeJuegos, $juegoNuevo)
 
 /**
  * Metodo que intenta resolver el punto 6 EXPLICACION 3
- * Dada una coleccion de juegos y nombre de un jugador, retorna el indice
+ * modulo que Dada una coleccion de juegos y nombre de un jugador, retorna el indice
  * del primer juego ganado, caso contrario, retorna -1
  * @param array $conjuntoDeJuegos
  * @param array $nombreJugador
@@ -206,13 +206,16 @@ function resumenJugador($listadoJuegos, $nombreDelJugador)
             $auxNombre = $nombreDelJugador;
 
             if ($listadoJuegos[$j]["puntosCruz"] > $listadoJuegos[$j]["puntosCirculo"]) {
+                //cantidad de juegos ganados
                 $auxJuegosGanados = $auxJuegosGanados + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $listadoJuegos[$j]["puntosCruz"];
             }
             if ($listadoJuegos[$j]["puntosCruz"] < $listadoJuegos[$j]["puntosCirculo"]) {
+                //cantidad juegos perdidos
                 $auxJuegosPerdidos = $auxJuegosPerdidos + 1;
             }
             if ($listadoJuegos[$j]["puntosCruz"] == $listadoJuegos[$j]["puntosCirculo"]) {
+                //cantidad juegos empatados
                 $auxJuegosEmpatados = $auxJuegosEmpatados + 1;
                 $auxPuntosAcumulados = $auxPuntosAcumulados + $listadoJuegos[$j]["puntosCruz"];
             }
@@ -245,7 +248,7 @@ function resumenJugador($listadoJuegos, $nombreDelJugador)
 }
 
 /**
- * Metodo que muestra el resumen de un jugar, recibe un resumen y lo muestra por pantalla
+ * Metodo que muestra el resumen de un jugador, recibe un resumen y lo muestra por pantalla
  * @param array $resumen
  * 
  */
