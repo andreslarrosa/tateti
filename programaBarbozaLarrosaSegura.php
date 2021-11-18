@@ -70,17 +70,14 @@ function selectionarOpcion()
  * @param int $max
  * @return int
  */
-function numeroEntre($min, $max)
-{
-    // ENTERO $value 
-    echo "ingrese un numero entre " . $min . " y " . $max . ": ";
-    $value = trim(fgets(STDIN));
-    if (!(($min <= $value) && ($value <= $max))) {
-        while (!(($min <= $value) && ($value <= $max))) {
-            echo "El numero de juego no existe\nIngrese un numero entre " . $min . " y " . $max . ": ";
-            $value = trim(fgets(STDIN));
+function numeroEntre($min, $max){
+    do {
+        echo "ingrese un numero entre " . $min . " y " . $max . ": ";
+        $value= trim(fgets(STDIN));
+        if (!(($min <= $value) && ($value <= $max))) {
+            echo "el numero de juego no existe";
         }
-    }
+    } while (!(($min <= $value) && ($value <= $max)));
     return $value;
 }
 
