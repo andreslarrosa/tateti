@@ -88,10 +88,10 @@ function selectionarOpcion()
  */
 function numeroEntre($min, $max){
     do {
-        echo "ingrese un numero entre " . $min . " y " . $max . ": ";
+        echo "Ingrese un numero entre " . $min . " y " . $max . ": ";
         $value= trim(fgets(STDIN));
         if (!(($min <= $value) && ($value <= $max))) {
-            echo "el numero de juego no existe";
+            echo "El numero de juego no existe \n";
         }
     } while (!(($min <= $value) && ($value <= $max)));
     return $value;
