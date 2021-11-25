@@ -389,7 +389,7 @@ function jugadorJugoConNombre($colJuegos, $jugadorNombre) {
             $jugadorEncontrado = 1;
         }
         $x++;
-    } while ($x < $cantidadJuegos);
+    } while ($x < $cantidadJuegos && $jugadorEncontrado <> 1);
     return($jugadorEncontrado);
 }
 
