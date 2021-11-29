@@ -122,11 +122,11 @@ function mostrarJuego($conjuntoJuegos, $numJuego)
             $ganador = "(Gano O)";
         }
 
-        echo "****************************** \n";
+        echo "························ \n";
         echo "Juego TATETI " . $numJuego + 1 . "  " . $ganador . "\n";
         echo "Jugador X: " . $juego["jugadorCruz"] . " obtuvo " . $juego["puntosCruz"] . " puntos \n";
         echo "Jugador O: " . $juego["jugadorCirculo"] . " obtuvo " . $juego["puntosCirculo"] . " puntos \n";
-        echo "****************************** \n";
+        echo "························ \n";
     } else {
         echo "El numero de juego no existe. \n ";
     }
@@ -364,8 +364,8 @@ function juegosOrdenadosParaJugadorO($colDeJuegos)
 
 /**
  * Módulo que recibe 2 string de entrada y las ordena de menor a mayor, utilizado para ordenar por JugadorCirculo ~ 11
- * @param string $a
- * @param string $b
+ * @param array $a
+ * @param array $b
  * @return int
  */
 function ordenarNombresJugadorCirculo($a, $b)
